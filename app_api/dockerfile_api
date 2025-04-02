@@ -1,0 +1,27 @@
+# Imagen base oficial ligera
+FROM python:3.11-slim
+
+# Variables de entorno para evitar buffer en logs
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Establecer directorio de trabajo en app_api
+WORKDIR /app/app_api
+
+# Instalar dependencias del sistema requeridas
+RUN apt-get update && \
+    apt-get install -y build-essential && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copiar e instalar dependencias
+COPY ./app_api/requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copiar el resto de la aplicación
+COPY ./app_api .
+
+# Exponer el puerto que usa uvicorn
+EXPOSE 8001
+
+# Comando por defecto para iniciar la API
+CMD ["uvicorn", "main_api:app", "--host", "0.0.0.0", "--port", "8001"]

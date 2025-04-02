@@ -1,0 +1,29 @@
+{
+    "name": "validaciondereferencia",
+    "category": "UTILITY",
+    "parameter_format": "NAMED",
+    "allow_category_change": true,
+    "language": "es_MX",
+    "components": [
+      {
+        "type": "BODY",
+        "text": "Soy {{agent_name}}, analista de crédito de la tienda Surtidora Departamental. {{client_name}} nos compartió sus datos ya que lo dejó como referencia para una solicitud de crédito. ¿Es usted {{reference_name}}?",
+        "example": {
+          "body_text_named_params": [
+            {
+              "param_name": "agent_name",
+              "example": "Jose Hernández"
+            },
+            {
+              "param_name": "client_name",
+              "example": "Juan Pérez"
+            },
+            {
+              "param_name": "reference_name",
+              "example": "Pedro Martínez"
+            }
+          ]
+        }
+      }
+    ]
+  }

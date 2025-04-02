@@ -1,0 +1,34 @@
+{
+  "messaging_product": "whatsapp",
+  "recipient_type": "individual",
+  "to": "529531127188",
+  "type": "template",
+  "template": {
+    "name": "validaciondereferencia",
+    "language": {
+      "code": "es_MX"
+    },
+    "components": [
+      {
+        "type": "body",
+        "parameters": [
+          {
+            "type": "text",
+            "parameter_name": "agent_name",
+            "text": "Jose Hernández"
+          },
+          {
+            "type": "text",
+            "parameter_name": "client_name",
+            "text": "Juan Pérez"
+          },
+          {
+            "type": "text",
+            "parameter_name": "reference_name",
+            "text": "Pedro Martínez"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,7 @@
+{
+    "status": "OK",
+    "message": "Webhook created successfully",
+    "webhook_id": "8028a72d-4466-4113-98d6-252512e785b0",
+    "webhook_url": "https://ai.ksms.mx/whatsapp/v1/webhooks/8028a72d-4466-4113-98d6-252512e785b0",
+    "whatsapp_verify_token": "yr72xg73Bu1kgy57wxZruxYv8De2UVql"
+  }

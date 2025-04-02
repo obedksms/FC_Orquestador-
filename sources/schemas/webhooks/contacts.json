@@ -1,0 +1,52 @@
+{
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "1362547508119721",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "15556400486",
+                            "phone_number_id": "580532771815815"
+                        },
+                        "contacts": [
+                            {
+                                "profile": {
+                                    "name": "ORO"
+                                },
+                                "wa_id": "5219531127188"
+                            }
+                        ],
+                        "messages": [
+                            {
+                                "from": "5219531127188",
+                                "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDQ3QkI5Q0Y3NTgyM0FENjE3OTY5NkE4N0IzOUE1QTkyAA==",
+                                "timestamp": "1743595761",
+                                "type": "contacts",
+                                "contacts": [
+                                    {
+                                        "name": {
+                                            "first_name": "Carpinteria",
+                                            "last_name": "Márquez",
+                                            "formatted_name": "Carpinteria Márquez"
+                                        },
+                                        "phones": [
+                                            {
+                                                "phone": "+52 953 102 9340",
+                                                "wa_id": "5219531029340",
+                                                "type": "Celular"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ]
+}

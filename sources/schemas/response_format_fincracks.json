@@ -1,0 +1,10 @@
+{
+    "agent_execution_id": "xxxx",
+    "event_type": "continue",
+    "payload": {
+        "agent_input": {
+            "input_data": "user_response",
+            "input_type": "human"
+        }
+    }
+}

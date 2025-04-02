@@ -1,0 +1,32 @@
+# Imagen base oficial ligera
+FROM python:3.11-slim
+
+# Variables de entorno para evitar buffer en logs
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+
+# Instala Supervisor
+RUN apt-get update && apt-get install -y supervisor && rm -rf /var/lib/apt/lists/*
+
+# Crea el directorio de Supervisor
+RUN mkdir -p /var/log/supervisor
+
+# Establecer directorio de trabajo en app_api
+WORKDIR /app/app_orchestrator
+
+# Instalar dependencias del sistema requeridas
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copiar e instalar dependencias
+COPY ./app_orchestrator/requirements.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+# Para el contenedor orchestrator
+COPY app_orchestrator/supervisord_orchestrator.conf /etc/supervisor/conf.d/supervisord_orchestrator.conf 
+# Para el contenedor workers
+COPY app_orchestrator/supervisord_workers.conf /etc/supervisor/conf.d/supervisord_workers.conf
+
+COPY ./app_orchestrator .

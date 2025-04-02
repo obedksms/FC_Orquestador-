@@ -1,0 +1,108 @@
+The server reported 9 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	●
+Properties	
+delivery_mode:	2
+Payload
+549 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIEQ1OUQzODQ5MEU0OERGM0JBNEUwMUUwOTFFMEI5MDVDAA==", "timestamp": "1743595358", "text": {"body": "Hola este es un mensaje de texto"}, "type": "text"}]}, "field": "messages"}]}]}
+Message 2
+The server reported 8 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+652 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIERFMkU5NzVGMjhCQTA2MEI3QThDRkMzM0YyODQzRDQ1AA==", "timestamp": "1743595689", "type": "image", "image": {"caption": "Está es una imagen", "mime_type": "image/jpeg", "sha256": "9aAx95NPhxvDJjj9N5xdwvJs8kYZO3EIVwmZCc4wsxM=", "id": "1661522231142697"}}]}, "field": "messages"}]}]}
+Message 3
+The server reported 7 messages remaining.
+
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+644 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDcxMzk0OEVDRTE2MkYwREQ1Mzg0ODI5N0FEOTc5QTJFAA==", "timestamp": "1743595707", "type": "audio", "audio": {"mime_type": "audio/ogg; codecs=opus", "sha256": "Tp1GrC8+9Oc0DN+dJEp2/1RtEyEvZ+UJIE5sbgW0k+8=", "id": "521147340807171", "voice": true}}]}, "field": "messages"}]}]}
+Message 5
+The server reported 5 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+641 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDU3MUI5RkM5NUY0QkQwNDBDODJDMEM4NkIxRDAyRENBAA==", "timestamp": "1743595716", "type": "sticker", "sticker": {"mime_type": "image/webp", "sha256": "FfiA84GWNnxnwRw1jUrfeRBXqH9kEf3LKyKAbJdfPdk=", "id": "1353767622381900", "animated": false}}]}, "field": "messages"}]}]}
+Message 6
+The server reported 4 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+618 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDhCMzA4RjA0NjM3ODY2Njg2OEEwRTRDMzNFQkFDN0RCAA==", "timestamp": "1743595730", "type": "image", "image": {"mime_type": "image/jpeg", "sha256": "g4b87nvQa4beqbC0ljL91/brBqVJOjDZqst59Ravmhc=", "id": "1365744871296462"}}]}, "field": "messages"}]}]}
+Message 7
+The server reported 3 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+563 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDg2NDI0Q0E2ODE4RTY0QjBBQTc0MUEzNEM5OTlEQUYyAA==", "timestamp": "1743595749", "location": {"latitude": 17.6692892, "longitude": -97.5701399}, "type": "location"}]}, "field": "messages"}]}]}
+Message 8
+The server reported 2 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+709 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDQ3QkI5Q0Y3NTgyM0FENjE3OTY5NkE4N0IzOUE1QTkyAA==", "timestamp": "1743595761", "type": "contacts", "contacts": [{"name": {"first_name": "Carpinteria", "last_name": "Márquez", "formatted_name": "Carpinteria Márquez"}, "phones": [{"phone": "+52 953 102 9340", "wa_id": "5219531029340", "type": "Celular"}]}]}]}, "field": "messages"}]}]}
+Message 9
+The server reported 1 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+654 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDU4OUMyNDE0MjI3RDZBNkVEMEM3MEYwQkFBQTBCMUM4AA==", "timestamp": "1743595773", "type": "document", "document": {"filename": "1014-A.pdf", "mime_type": "application/pdf", "sha256": "AOg/ms7QPhePAroOBOnwsqjoiURfl45B2amCuoQ1U+8=", "id": "708260451763034"}}]}, "field": "messages"}]}]}
+Message 10
+The server reported 0 messages remaining.
+
+Exchange	webhook_exchange
+Routing Key	webhook.dfacceb4-14b3-4180-9636-d185c2132375
+Redelivered	○
+Properties	
+delivery_mode:	2
+Payload
+671 bytes
+Encoding: string
+{"object": "whatsapp_business_account", "entry": [{"id": "1362547508119721", "changes": [{"value": {"messaging_product": "whatsapp", "metadata": {"display_phone_number": "15556400486", "phone_number_id": "580532771815815"}, "contacts": [{"profile": {"name": "ORO"}, "wa_id": "5219531127188"}], "messages": [{"from": "5219531127188", "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIDMxQkZCOTQ3RjkxM0I5RkI0OTI5NjAzNTU5NUVFN0JBAA==", "timestamp": "1743595794", "errors": [{"code": 131051, "title": "Message type unknown", "message": "Message type unknown", "error_data": {"details": "Message type is currently not supported."}}], "type": "unsupported"}]}, "field": "messages"}]}]}

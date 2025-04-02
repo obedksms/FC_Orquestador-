@@ -1,0 +1,80 @@
+services:
+  mongoOR:
+    image: mongo:7.0
+    container_name: mongodb-OR
+    restart: unless-stopped
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./storeMongo:/data/db
+    networks:
+      - OR_net
+
+  tree-api:
+    build:
+      context: .
+      dockerfile: ./app_api/dockerfile_api
+    image: "tree_api_v1"
+    container_name: tree-api
+    restart: unless-stopped
+    command: ["uvicorn", "main_api:app", "--host", "0.0.0.0", "--port", "8001"]
+    volumes:
+      - ./logs/api:/app/app_api/logs
+    ports:
+      - "8001:8001"
+    environment:
+      - TZ=America/Mexico_City
+    env_file:
+      - .env
+    depends_on:
+      - mongoOR
+    networks:
+      - OR_net
+  
+  orchestrator:
+    build:
+      context: .
+      dockerfile: ./app_orchestrator/dockerfile_orchestrator_worker
+    image: "orchestrator_v1"
+    container_name: orchestrator
+    restart: unless-stopped
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord_orchestrator.conf"]
+    #command: ["python", "orchestrator.py"]
+    volumes:
+      - ./logs/orquestador:/app/app_orchestrator/logs
+      - ./logs/orquestador:/var/log/supervisor
+    env_file:
+      - .env
+    environment:
+      - TZ=America/Mexico_City
+    networks:
+      - OR_net
+  
+  worker:
+    build:
+      context: .
+      dockerfile: ./app_orchestrator/dockerfile_orchestrator_worker
+    container_name: worker
+    restart: unless-stopped
+    #command: ["celery", "-A", "tasks", "worker", "--loglevel=info"]
+    #celery -A tasks worker --loglevel=info
+    #celery -A tasks worker --loglevel=info --concurrency=4 #  permite ejecutar hasta 4 tareas en paralelo.
+    #celery -A tasks worker --loglevel=info -Q fincracks_queue # Puedes definir colas en celeryconfig.py y decirle al worker que escuche una en específico:
+    #celery -A tasks worker --loglevel=info -Q colaAgente # Worker que escucha "colaAgente"
+    #command: ["celery", "-A", "worker.tasks", "worker", "--loglevel=info", "--concurrency=2"]
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord_workers.conf"]
+    volumes:
+      - ./logs/workers:/app/app_orchestrator/logs
+      - ./logs/workers:/var/log/supervisor
+    env_file:
+      - .env
+    environment:
+      - TZ=America/Mexico_City
+    networks:
+      - OR_net
+  
+  
+
+networks:
+  OR_net:
+    driver: bridge

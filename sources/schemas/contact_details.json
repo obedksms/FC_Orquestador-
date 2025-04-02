@@ -1,0 +1,41 @@
+
+{
+    "recipient_number": "+55 5512345678",
+    "whatsapp_token": "EAAQfmvT1cbkBO17VXw0TGBJ1z7ixd9fWFYMZByW7l7m397JSPECK1fBQR9StdkvC4rsA13KP1boy7SB0yvXClZAQAhhqLGbZAZAotk3ZC0HtZAK8KaPfvZAejFPRXpryAHbiKUPeEX7ZAZBdLvZB5efBrOjsxQeQ9lTbMC8JGR9mDy1TZATTwycIgn4FOcIeDUvmugKPfJ4QgUyjwZBrO5ZBuVVUTJkAsc4QZD",
+    "whatsapp_phone_number_id": "580532771815815",
+    "whatsapp_business_account_id": "1362547508119721",
+    "body_template": {
+        "messaging_product": "whatsapp",
+        "recipient_type": "individual",
+        "to": "529531127188",
+        "type": "template",
+        "template": {
+            "name": "validaciondereferencia",
+            "language": {
+                "code": "es_MX"
+            },
+            "components": [
+                {
+                    "type": "body",
+                    "parameters": [
+                        {
+                            "type": "text",
+                            "parameter_name": "agent_name",
+                            "text": "Jose Hernández"
+                        },
+                        {
+                            "type": "text",
+                            "parameter_name": "client_name",
+                            "text": "Juan Pérez"
+                        },
+                        {
+                            "type": "text",
+                            "parameter_name": "reference_name",
+                            "text": "Pedro Martínez"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

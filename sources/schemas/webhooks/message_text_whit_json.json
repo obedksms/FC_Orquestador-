@@ -1,0 +1,40 @@
+{
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "1362547508119721",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "15556400486",
+                            "phone_number_id": "580532771815815"
+                        },
+                        "contacts": [
+                            {
+                                "profile": {
+                                    "name": "ORO"
+                                },
+                                "wa_id": "5219531127188"
+                            }
+                        ],
+                        "messages": [
+                            {
+                                "from": "5219531127188",
+                                "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIEU2OUM5MjkzOTY3RUFBRTRCOUFBOTc3NURERDkwOTY2AA==",
+                                "timestamp": "1743596316",
+                                "text": {
+                                    "body": "{\n\"Hola\":\"adios\"\n}"
+                                },
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ]
+}
+
