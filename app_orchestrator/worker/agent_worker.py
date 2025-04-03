@@ -17,8 +17,10 @@ from app.whatsapp.whatsapp_manager import WhatsAppManager
 mongo_manager = MongoCasesManager()
 whatsapp_manager = WhatsAppManager()
 
+print("Registrando tarea: process_agente_message")
+print(app.tasks.keys())  # Verás todas las tareas registradas
 
-@app.task(name="worker.agent_worker.process_agente_message")
+@app.task(name="worker.agent_worker.process_agent_message")
 def process_agent_message(message):
     logger.info(f"*************************")
     logger.info("**Iniciando worker agente**")

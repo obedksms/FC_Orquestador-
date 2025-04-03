@@ -13,9 +13,8 @@ mongo_manager = MongoCasesManager()
 rabbitmq_manager = RabbitMQ()
 
 # Tarea: Procesar mensaje de Webhook
-@app.task(
-    name="worker.webhook_worker.process_webhook_message"
-)  # --> Celery necesita el nombre registrado de la tarea, no solo el nombre de la función.
+
+@app.task(name="worker.webhook_worker.process_webhook_message")  # --> Celery necesita el nombre registrado de la tarea, no solo el nombre de la función.
 def process_webhook_message(body_webhook):
     logger.info(f"*************************")
     logger.info("Inciando Worker webhook ")
