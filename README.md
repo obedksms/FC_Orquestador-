@@ -30,3 +30,8 @@ RMQ_AGENT_RESPONSE_QUEUE=agent_response_queue
 
 ---
 
+
+
+### Nota.
+- Actualizar el readme
+- Dar permisos de escrita a la carpta de logs porque el contenedor de los workers se levanta como usuario no como root

@@ -1,9 +1,14 @@
-from fastapi import APIRouter, HTTPException, Request, Depends
-from db.mongo import MongoCasesManager, MongoSchema, ContactDetails
-from RMQ.publisher_tree import publish_tree
-from log.logger_config import logger
-from pydantic import BaseModel, Field
 from typing import Any, Dict
+
+from pydantic import BaseModel, Field
+from fastapi import APIRouter, HTTPException, Request, Depends
+
+from log.logger_config import logger
+from RMQ.publisher_tree import publish_tree
+from db.mongo import MongoCasesManager, MongoSchema, ContactDetails
+
+
+
 
 
 router = APIRouter()
