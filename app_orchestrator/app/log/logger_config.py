@@ -7,7 +7,9 @@ os.makedirs(LOG_DIR, exist_ok=True)
 
 logger.remove()  # Eliminar configuraciones previas
 
-LOG_FORMAT = "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level:<8} | {module}:{function}:{line} - {message}"
+#LOG_FORMAT = "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level:<8} | {module}:{function}:{line} - {message}"
+LOG_FORMAT = "{time:YYYY-MM-DD HH:mm:ss.SSS} | {level:<8} | {module}:{function}:{line}\t\t{message}"
+
 
 # Log en consola con colores
 logger.add(

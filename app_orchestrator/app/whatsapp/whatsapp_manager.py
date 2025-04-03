@@ -86,7 +86,7 @@ class WhatsAppManager:
             response_data = response.json()
 
             if response.status_code in [200, 201]:
-                logger.info(f"Plantilla enviada exitosamente: {response_data}")
+                logger.info(f"mensaje enviado exitosamente: {response_data}")
                 return True, response_data
             else:
                 logger.error(
