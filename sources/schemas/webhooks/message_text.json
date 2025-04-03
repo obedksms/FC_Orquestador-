@@ -22,10 +22,10 @@
                         "messages": [
                             {
                                 "from": "5219531127188",
-                                "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIEJDNTQ1MjlFNEUyMUZEOTZCNDI5ODI5QTUwNTI5MzQ5AA==",
-                                "timestamp": "1743595700",
+                                "id": "wamid.HBgNNTIxOTUzMTEyNzE4OBUCABIYIEQ1OUQzODQ5MEU0OERGM0JBNEUwMUUwOTFFMEI5MDVDAA==",
+                                "timestamp": "1743595358",
                                 "text": {
-                                    "body": "Este es un audio"
+                                    "body": "Hola este es un mensaje de texto"
                                 },
                                 "type": "text"
                             }

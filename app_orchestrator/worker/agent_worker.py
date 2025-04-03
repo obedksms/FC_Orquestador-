@@ -1,65 +1,73 @@
 import time
+import json
 from worker.celery_app import app
 
 
 from app.db.mongo import MongoCasesManager
 from app.log.logger_config import logger
+from app.whatsapp.whatsapp_manager import WhatsAppManager
 
 # Instancia principal de Celery
-#app = Celery("agent_worker")
+# app = Celery("agent_worker")
 
 
 # Configurar Celery para que use el archivo `celeryconfig.py` como fuente de configuración.
-#app.config_from_object("worker.celeryconfig")
+# app.config_from_object("worker.celeryconfig")
 
-_mongo = MongoCasesManager
+mongo_manager = MongoCasesManager()
+whatsapp_manager = WhatsAppManager()
 
 
 @app.task(name="worker.agent_worker.process_agente_message")
 def process_agent_message(message):
 
-    # logger.info(f"***Mensaje del Agente recibido: {message}***")
+    logger.info(f"Mensaje del Agente recibido:{message}")
 
-    # """Busca en la base de dato la metadata del esa ejecucion"""
-    # _agent_execution_id = message.get("agent_execution_id")
-    # if not _agent_execution_id:
-    #     logger.warning("El mensaje no contiene 'agent_execution_id'")
-    #     return
+    """Busca en la base de dato la metadata del esa ejecucion"""
 
-    # succes_mongo_search, result_document = _mongo.search_status_by_agent_execution_id(
-    #     agent_execution_id=_agent_execution_id
-    # )
+    # Verificar que el mensaje tenga agent_execution_id
+    _agent_execution_id = message.get("agent_execution_id", None)
+    if not _agent_execution_id:
+        logger.warning("El mensaje no contiene 'agent_execution_id'")
+        return
+    # Buscar documento en Mongo
+    succes_mongo_search, result_document = (
+        mongo_manager.search_document_by_agent_execution_id(
+            agent_execution_id=_agent_execution_id
+        )
+    )
 
-    # if not succes_mongo_search:
-    #     logger.warning(f"Error al buscar en Mongo: {result_document}")
-    #     return
+    if not succes_mongo_search or not result_document:
+        return
 
-    # if result_document is None:
-    #     logger.warning(f"Documento no encontrado para: {_agent_execution_id}")
-    #     return
+    """Dado el 'event_type' se decide cual sera el sigueinte paso en la ejecucion """
+    # Verificar que venga event_type
+    _event_type = message.get("event_type")
+    if not _event_type:
+        logger.warning("'event_type' no encontrado en el mensaje")
+        return
 
-    # """Dado el 'event_type' se decide cual sera el sigueinte paso en la ejecucion """
+    if _event_type == "template":
+        """
+        Si es 'template' tenemos que enviar la plantilla para iniciar la ventana de conversacion.
+        """
+        result_document = json.dumps(result_document)
+        contact_details = result_document.get("contact_details", {})
+        body_template = contact_details.get("body_template")
+        whatsapp_token = contact_details.get("whatsapp_token")
+        whatsapp_phone_number_id = contact_details.get("whatsapp_phone_number_id")
 
-    # _event_type = message.get("event_type")
-    # if not _event_type:
-    #     logger.warning("'event_type' no encontrado en el mensaje")
-    #     return
+        succes_send_template, result = whatsapp_manager.send_template_to_user(
+            whatsapp_token=whatsapp_token,
+            whatsapp_phone_number_id=whatsapp_phone_number_id,
+            body_template=body_template,
+        )
 
-    
-    
-    # if _event_type == "template":
-    #     """
-    #     Si es 'template' tenemos que contruir el Body necesario para enviar la plantilla a partir de la metadata.
-    #     Este es el primer mensaje de la ejecucion y sirve para abrir la ventaja de conversacion entre el agente y el usuario.
-    #     """
-    #     # succes_send_template, result = send_template(result_document)
-    #     succes_send_template = True  # simulado
-    #     if not succes_send_template:
-    #         logger.error("Error enviando la plantilla")
-    #         return
-    #     logger.info("Plantilla enviada correctamente")
-        
-   
+        if not succes_send_template:
+            return
+        logger.info("Plantilla enviada correctamente")
+
+
     # elif _event_type == "reply":
     #     """
     #     Si es 'reply' tenemos que enviar un mensaje de texto simple

@@ -1,7 +1,7 @@
 import os
-import sys
 import json
-import signal
+from typing import Tuple, Optional, Dict
+
 
 import pika
 from dotenv import load_dotenv
@@ -31,7 +31,7 @@ class RabbitMQ:
             raise ConnectionError(f"No se pudo conectar a RabbitMQ: {str(e)}")
 
 
-    def publish_user_message_to_agent(self, user_message: str, agent_execution_id: str) -> None:
+    def publish_user_message_to_agent(self, user_message: str, agent_execution_id: str) -> Tuple[bool, Optional[Dict[str, str]]]:
         """
         Publica un mensaje al agente de fincracks. Usa la estructura solicitada por fincracks
 
@@ -64,11 +64,10 @@ class RabbitMQ:
             return True, {"message": "Mensaje enviado a RabbitMQ-Fincracks"}
         except Exception as e:
             logger.error(f"Error enviando mensaje a RabbitMQ: {str(e)}", exc_info=True)
-            raise RuntimeError("Error enviando mensaje a RabbitMQ")
+            return False, None
 
     def close(self) -> None:
         """Cierra la conexión con RabbitMQ."""
         if self.connection and not self.connection.is_closed:
             self.connection.close()        
         
-        """Publica un mensaje al agente de fincracks. Usa la estructura solicitada por fincracks"""
