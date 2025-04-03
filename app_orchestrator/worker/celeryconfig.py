@@ -19,6 +19,14 @@ La URL sigue el formato: pyamqp://usuario:contraseña@host:puerto//
 """
 broker_url = (f"pyamqp://{rabbitmq_user}:{rabbitmq_password}@{rabbitmq_host}:{rabbitmq_port}//")
 
+
+broker_heartbeat = 10
+broker_connection_timeout = 30
+broker_pool_limit = None
+task_acks_late = True
+task_reject_on_worker_lost = True
+worker_cancel_long_running_tasks_on_connection_loss = True
+
 """
 Decidir si Celery debe reintentar conectarse al broker de mensajes cuando inicia el worker.
 """

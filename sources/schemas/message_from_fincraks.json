@@ -1,0 +1,13 @@
+{
+  "agent_execution_id": "03042025",
+  "event_type": "reply",
+  "content": {
+    "contact_details": {
+      "recipient_number": "+55 5512345678",
+      "whatsapp_token": "whatsapp_token",
+      "whatsapp_phone_number_id": "whatsapp_phone_number_id",
+      "whatsapp_business_account_id": "whatsapp_business_account_id"
+    }
+  },
+  "message": "¿Conoces a Juan Pérez?"
+}

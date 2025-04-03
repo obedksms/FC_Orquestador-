@@ -28,8 +28,51 @@ class RabbitMQ:
             self.channel = self.connection.channel()
             self.channel.queue_declare(queue=rabbitmq_fincracks_ejecution_queue, durable=True)
         except Exception as e:
-            raise ConnectionError(f"No se pudo conectar a RabbitMQ: {str(e)}")
-
+            error_msg = (
+                str(e) if str(e) else repr(e)
+            )  # Return the canonical string representation of the object.
+            logger.error(f"No se pudo conectar a RabbitMQ: {error_msg}")
+            self.close()
+            raise ConnectionError(f"No se pudo conectar a RabbitMQ: {error_msg}")
+    
+    def _connect(self):
+        try:
+            logger.info("🔌 Conectando a RabbitMQ...")
+            self.connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host=rabbitmq_host,
+                port=rabbitmq_port,
+                virtual_host="/",
+                credentials=self.credentials,
+                heartbeat=60,
+                blocked_connection_timeout=30,
+            ))
+            self.channel = self.connection.channel()
+            self.channel.queue_declare(queue=rabbitmq_fincracks_ejecution_queue, durable=True)
+            logger.info("✅ Conexión establecida con RabbitMQ.")
+        except Exception as e:
+            error_msg = str(e) if str(e) else repr(e)
+            logger.error(f"❌ No se pudo conectar a RabbitMQ: {error_msg}")
+            raise ConnectionError(f"No se pudo conectar a RabbitMQ: {error_msg}")
+    
+    def _reconnect(self):
+        try:
+            logger.warning("🔁 Reconectando a RabbitMQ...")
+            self.close()
+            self._connect()
+        except Exception as e:
+            logger.exception("❌ Error al reconectar con RabbitMQ")
+            raise
+        
+        
+    def close(self) -> None:
+        """Cierra la conexión con RabbitMQ si está abierta."""
+        try:
+            if self.connection and self.connection.is_open:
+                self.connection.close()
+                logger.info("🔒 Conexión a RabbitMQ cerrada correctamente.")
+        except Exception as e:
+            logger.warning(f"⚠️ Error cerrando la conexión: {e}")      
+        
 
     def publish_user_message_to_agent(self, user_message: str, agent_execution_id: str) -> Tuple[bool, Optional[Dict[str, str]]]:
         """
@@ -42,6 +85,12 @@ class RabbitMQ:
         Raises:
             RuntimeError: _description_
         """
+        # Verificar estado del canal
+        
+        if self.connection.is_closed or self.channel.is_closed:
+            logger.warning("RabbitMQ connection o channel está cerrado. Intentando reconectar...")
+            self._reconnect()
+        
         message = {
             "payload": {
                 "agent_input": {
@@ -64,10 +113,9 @@ class RabbitMQ:
             return True, {"message": "Mensaje enviado a RabbitMQ-Fincracks"}
         except Exception as e:
             logger.error(f"Error enviando mensaje a RabbitMQ: {str(e)}", exc_info=True)
+            if self.connection and not self.connection.is_closed:
+                self.connection.close()   
             return False, None
 
-    def close(self) -> None:
-        """Cierra la conexión con RabbitMQ."""
-        if self.connection and not self.connection.is_closed:
-            self.connection.close()        
-        
+    
+    

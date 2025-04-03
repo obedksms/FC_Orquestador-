@@ -50,27 +50,27 @@ channel.queue_declare(queue=rabbitmq_agent_response_queue, durable=True)
 def callback_global(ch, method, properties, body):
     """Callback para la cola global"""
     message = json.loads(body.decode())
-    logger.info(f"📥 [Tarea] Mensaje recibido en {rabbitmq_global_queue}: {message}")
+    logger.info(f"Mensaje recibido en {rabbitmq_global_queue}: {message}")
     try:
         #logger.info(f"📥 [Global] Mensaje recibido: {body.decode()}")
         # Procesar mensaje aquí...
         process_webhook_message.apply_async(args=[message], queue="Weebhook")
-        logger.info("* Tarea enviada al worker")
+        logger.info("Tarea enviada al worker")
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
-        logger.error(f"❌ [Global] Error procesando mensaje: {e}")
+        logger.error(f"[Global] Error procesando mensaje: {e}")
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
 
 def callback_task(ch, method, properties, body):
     """Callback para la cola de tareas"""
     try:
-        logger.info(f"📥 [Tarea] Mensaje recibido en {rabbitmq_agent_response_queue}: {body.decode()}")
+        logger.info(f"Mensaje recibido en {rabbitmq_agent_response_queue}: {body.decode()}")
         message = json.loads(body.decode())
         process_agent_message.apply_async(args=[message], queue="Agente")
-        logger.info("* Tarea enviada al worker")
+        logger.info("* Tarea enviada al worker {}")
         ch.basic_ack(delivery_tag=method.delivery_tag)
     except Exception as e:
-        logger.error(f"❌ [Tarea] Error enviando tarea: {e}")
+        logger.error(f"[Tarea] Error enviando tarea: {e}")
         ch.basic_nack(delivery_tag=method.delivery_tag, requeue=True)
 
 def graceful_shutdown(signal, frame):

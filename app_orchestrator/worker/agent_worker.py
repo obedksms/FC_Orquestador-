@@ -20,17 +20,14 @@ whatsapp_manager = WhatsAppManager()
 
 @app.task(name="worker.agent_worker.process_agente_message")
 def process_agent_message(message):
-
+    logger.info(f"*************************************")
     logger.info(f"Mensaje del Agente recibido:{message}")
 
     """Busca en la base de dato la metadata del esa ejecucion"""
-
-    # Verificar que el mensaje tenga agent_execution_id
     _agent_execution_id = message.get("agent_execution_id", None)
     if not _agent_execution_id:
         logger.warning("El mensaje no contiene 'agent_execution_id'")
         return
-    # Buscar documento en Mongo
     succes_mongo_search, result_document = (
         mongo_manager.search_document_by_agent_execution_id(
             agent_execution_id=_agent_execution_id
@@ -40,64 +37,71 @@ def process_agent_message(message):
     if not succes_mongo_search or not result_document:
         return
 
-    """Dado el 'event_type' se decide cual sera el sigueinte paso en la ejecucion """
-    # Verificar que venga event_type
+    """Dado el 'event_type' se decide cual sera el siguiente paso en la ejecucion """
     _event_type = message.get("event_type")
     if not _event_type:
         logger.warning("'event_type' no encontrado en el mensaje")
         return
 
+    """Obtener datos de contacto y validar si existen """
+    contact_details = result_document.get("contact_details", {})
+    body_template = contact_details.get("body_template")
+    whatsapp_token = contact_details.get("whatsapp_token")
+    whatsapp_phone_number_id = contact_details.get("whatsapp_phone_number_id")
+    recipient_number = contact_details.get("recipient_number")
+    if any (v is None for v in [body_template,whatsapp_token,whatsapp_manager,whatsapp_phone_number_id, recipient_number,]):
+        logger.warning("Datos faltantes para enviar plantilla y mensaje ")
+        return
 
+    
     if _event_type == "template":
-        """
-        Si es 'template' tenemos que enviar la plantilla para iniciar la ventana de conversación.
-        """
+        """Si es 'template' tenemos que enviar la plantilla para iniciar la ventana de conversación."""
         try:
-            contact_details = result_document.get("contact_details", {})
-            body_template = contact_details.get("body_template")
-            whatsapp_token = contact_details.get("whatsapp_token")
-            whatsapp_phone_number_id = contact_details.get("whatsapp_phone_number_id")
-
-            # Validar datos antes de enviar
-            if any(v is None for v in [body_template, whatsapp_token, whatsapp_manager, whatsapp_phone_number_id]):
-                logger.info("Datos faltantes para enviar plantilla")
-                return
-
             success_send_template, result = whatsapp_manager.send_template_to_user(
                 whatsapp_token=whatsapp_token,
                 whatsapp_phone_number_id=whatsapp_phone_number_id,
                 body_template=body_template,
             )
+            if success_send_template:
+                mongo_manager.update_status_by_agent_execution_id(agent_execution_id=_agent_execution_id, status="sent_message_to_user")
             return
         except Exception as e:
             logger.exception(f"Error tratando caso 'template': {e}")
             return
 
+    
+    elif _event_type == "reply":
+        """Si es 'reply' tenemos que mandar el mensaje de fincracks como un mensaje de texto simple a el usuario"""
+        try:
+            message_from_frincrack = message.get("message")
+            succes_send_message, result = whatsapp_manager.send_message_text(
+                recipient_number=recipient_number,
+                whatsapp_token=whatsapp_token,
+                whatsapp_phone_number_id=whatsapp_phone_number_id,
+                message=message_from_frincrack    
+            )
+            if succes_send_message:
+                mongo_manager.update_status_by_agent_execution_id(agent_execution_id=_agent_execution_id, status="sent_message_to_user")
+            return
+        except Exception as e:
+            logger.warning(f"Error:{e}")
+            return
 
-    # elif _event_type == "reply":
-    #     """
-    #     Si es 'reply' tenemos que enviar un mensaje de texto simple
-    #     """
-    #     # succes_send_message, result = send_message(result_document)
-    #     succes_send_message = True  # simulado
-    #     if not succes_send_message:
-    #         logger.error("Error enviando mensaje")
-    #         return
-    #     logger.info("Mensaje enviado correctamente")
+    elif _event_type in ("end", "error"):
+        """
+        Para los casos de 'error' y/o 'end' el proceso ah terminado y actualizamos el estatus en la base de de datos
+        """
+        mongo_manager.update_status_by_agent_execution_id(agent_execution_id=_agent_execution_id, status=_event_type)
+        succes_update_status = True  # simulado
+        if not succes_update_status:
+            logger.error("Error actualizando estado en la base")
+            return
+        logger.info("Estado actualizado correctamente")
 
-    # elif _event_type in ("end", "error"):
-    #     """
-    #     Para los casos de 'error' y/o 'end' el proceso ah terminado y actualizamos el estatus en la base de de datos
-    #     """
-    #     # succes_update_status, result = update_status(...)
-    #     succes_update_status = True  # simulado
-    #     if not succes_update_status:
-    #         logger.error("Error actualizando estado en la base")
-    #         return
-    #     logger.info("Estado actualizado correctamente")
-
-    # else:
-    #     logger.warning(f"event_type desconocido: {_event_type}")
-    #     return
+    else:
+        logger.warning(f"event_type desconocido: {_event_type}")
+        return
 
     logger.info("Worker Agente ejecutado correctamente")
+
+    

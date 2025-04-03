@@ -55,7 +55,8 @@ services:
       context: .
       dockerfile: ./app_orchestrator/dockerfile_orchestrator_worker
     container_name: worker
-    restart: unless-stopped
+    restart: on-failure
+
     #command: ["celery", "-A", "tasks", "worker", "--loglevel=info"]
     #celery -A tasks worker --loglevel=info
     #celery -A tasks worker --loglevel=info --concurrency=4 #  permite ejecutar hasta 4 tareas en paralelo.

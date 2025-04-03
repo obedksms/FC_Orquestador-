@@ -118,6 +118,7 @@ class MongoCasesManager:
         ) -> Tuple[bool, Union[str, None, dict]]:
         """
         Busca un documento en MongoDB por los datos de contacto de WhatsApp.
+        Si es status es finish o error se descarta
 
         Args:
             whatsapp_business_account_id (str): ID de la cuenta empresarial de WhatsApp.
@@ -135,22 +136,24 @@ class MongoCasesManager:
             query = {
                 "contact_details.whatsapp_business_account_id": whatsapp_business_account_id,
                 "contact_details.whatsapp_phone_number_id": whatsapp_phone_number_id,
-                "contact_details.recipient_number": recipient_number
+                "contact_details.recipient_number": recipient_number,
+                "status": {"$nin": ["finish", "error"]}  # Solo documentos cuyo status NO sea 'finis' ni 'error'
             }
 
             document = self.collection.find_one(query)
 
             if document:
                 agent_execution_id = document.get("agent_execution_id")
-                logger.info(f" Documento encontrado. Agent Execution ID: {agent_execution_id}")
+                logger.info(f"Documento encontrado. Agent Execution ID: {agent_execution_id}")
                 return True, agent_execution_id
 
-            logger.warning(" No se encontró documento con los datos de contacto proporcionados.")
+            logger.warning("No se encontró documento con los datos de contacto proporcionados.")
             return False, None
 
-        except PyMongoError or Exception as e:
-            logger.exception(" Error al consultar MongoDB por datos de contacto de WhatsApp.")
+        except PyMongoError as e:
+            logger.exception("Error al consultar MongoDB por datos de contacto de WhatsApp.")
             return False, {"error": str(e)}
+
 
 
     def search_document_by_agent_execution_id_and_return_succes(
@@ -159,7 +162,8 @@ class MongoCasesManager:
     ) -> Tuple[bool, Union[str, None, dict]]:
         """
         Busca el documento por su agent_execution_id y regresa la indicacion para continuar o denegar la operación
-
+        "send_tree", "finish", "error"
+        Se ocupa en el wroker de webhooks y tiene como obbjetivo saber si el mensaje sera recibido por el usuario
         Returns:
             Tuple:
                 - (True, None) si el estatus permite continuar.
