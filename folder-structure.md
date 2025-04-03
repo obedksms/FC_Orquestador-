@@ -21,7 +21,7 @@ orquestador-worker
 │   │   │   └── mongo.py [9.20 KB]
 │   │   ├── log/
 │   │   │   └── logger_config.py [1006 bytes]
-│   │   ├── rabbbitMQ/
+│   │   ├── rabbitMQ/
 │   │   │   └── rabbitmq.py [4.59 KB]
 │   │   └── whatsapp/
 │   │       └── whatsapp_manager.py [3.57 KB]
@@ -74,7 +74,7 @@ orquestador-worker
 │       └── tree.json [14.52 KB]
 ├── README.md [1.35 KB]
 ├── docker-compose.yml [2.34 KB]
-└── folder-structure.md [3.57 KB]
+└── folder-structure.md [3.77 KB]
 ```
 
 
@@ -97,7 +97,7 @@ File Types:
   - .json Files: 19
 Largest File: architecture-diagram-components.excalidrawlib [95.81 KB]
 Smallest File: schema_template.py [0 bytes]
-Total Project Size: 352.67 KB
+Total Project Size: 352.87 KB
 Ignored Files and Folders:
   - logs
   - storeMongo
