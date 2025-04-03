@@ -97,10 +97,12 @@ class MongoCasesManager:
                 - (False, {"error": "mensaje"}) si hay error en la consulta.
         """
         try:
+            logger.info(f"Iniciando busqueda para el agent_execution_id: {agent_execution_id}")
             document = self.collection.find_one(
                 {"agent_execution_id": agent_execution_id}
             )
             if document:
+                logger.info(document)
                 return True, document
             logger.warning(f"No se encontró documento con ID: {agent_execution_id}")
             return False, None

@@ -47,25 +47,31 @@ def process_agent_message(message):
         logger.warning("'event_type' no encontrado en el mensaje")
         return
 
+
     if _event_type == "template":
         """
-        Si es 'template' tenemos que enviar la plantilla para iniciar la ventana de conversacion.
+        Si es 'template' tenemos que enviar la plantilla para iniciar la ventana de conversación.
         """
-        result_document = json.dumps(result_document)
-        contact_details = result_document.get("contact_details", {})
-        body_template = contact_details.get("body_template")
-        whatsapp_token = contact_details.get("whatsapp_token")
-        whatsapp_phone_number_id = contact_details.get("whatsapp_phone_number_id")
+        try:
+            contact_details = result_document.get("contact_details", {})
+            body_template = contact_details.get("body_template")
+            whatsapp_token = contact_details.get("whatsapp_token")
+            whatsapp_phone_number_id = contact_details.get("whatsapp_phone_number_id")
 
-        succes_send_template, result = whatsapp_manager.send_template_to_user(
-            whatsapp_token=whatsapp_token,
-            whatsapp_phone_number_id=whatsapp_phone_number_id,
-            body_template=body_template,
-        )
+            # Validar datos antes de enviar
+            if any(v is None for v in [body_template, whatsapp_token, whatsapp_manager, whatsapp_phone_number_id]):
+                logger.info("Datos faltantes para enviar plantilla")
+                return
 
-        if not succes_send_template:
+            success_send_template, result = whatsapp_manager.send_template_to_user(
+                whatsapp_token=whatsapp_token,
+                whatsapp_phone_number_id=whatsapp_phone_number_id,
+                body_template=body_template,
+            )
             return
-        logger.info("Plantilla enviada correctamente")
+        except Exception as e:
+            logger.exception(f"Error tratando caso 'template': {e}")
+            return
 
 
     # elif _event_type == "reply":

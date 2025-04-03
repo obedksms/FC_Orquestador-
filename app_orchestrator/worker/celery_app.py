@@ -1,8 +1,6 @@
 from celery import Celery
 
-# Forzar ejecución del código donde se definen las tareas
-# Importaciones explícitas para asegurar el registro
-from worker import agent_worker, webhook_worker
+
 
 app = Celery("orquestador")
 app.config_from_object("worker.celeryconfig")
@@ -11,4 +9,6 @@ app.config_from_object("worker.celeryconfig")
 app.autodiscover_tasks(["worker.agent_worker", "worker.webhook_worker"])
 
 
-
+# Forzar ejecución del código donde se definen las tareas
+# Importaciones explícitas para asegurar el registro
+from worker import agent_worker, webhook_worker
