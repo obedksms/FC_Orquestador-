@@ -5,7 +5,8 @@ from worker.celery_app import app
 from app.log.logger_config import logger
 from worker.webhook_worker_functions.fprocess_text_messages_from_webhook import (process_text_messages_from_webhook,)
 from worker.webhook_worker_functions.fextract_whatsapp_contact_data import (extract_whatsapp_contact_data,)
-from app.rabbbitMQ.rabbitmq import RabbitMQ
+from app.rabbitMQ.rabbitmq import RabbitMQ
+
 from app.db.mongo import MongoCasesManager
 
 mongo_manager = MongoCasesManager()
