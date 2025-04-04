@@ -1,0 +1,390 @@
+{
+    "tree": {
+        "event_type": "create",
+        "env_type": "VP",
+        "agent_id": "demo-234234234",
+        "agent_execution_id": "waefwaer124124124",
+        "contact_details": {
+          "recipient_number": "+55 5512345678",
+          "whatsapp_token": "whatsapp_token",
+          "whatsapp_phone_number_id": "whatsapp_phone_number_id",
+          "whatsapp_business_account_id": "whatsapp_business_account_id"
+        },
+        "timestamp": "2025-01-20T12:00:00Z",
+        "payload": {
+          "agent_name": "Agent-Surtidora-Departamental",
+          "agent_graph": {
+            "componentList": [
+              {
+                "component": "FormNode",
+                "componentKeyGenerated": "user-confirmation",
+                "meta": {
+                  "message_args": {
+                    "message": {
+                      "template": "Hola mucho gusto, mi nombre es {agent_name}, analista de crédito de la tienda Surtidora Departamental. El motivo de mi mensaje es porque {client_name} solicitó un crédito y dejó sus datos como referencia. ¿Tengo el gusto con {reference_name}?"
+                    },
+                    "template_name": "Surtidora-Departamental-template",
+                    "variables": [
+                      {
+                        "variable_name": "agent_name",
+                        "fincracks_type": "input_parameter"
+                      },
+                      {
+                        "variable_name": "client_name",
+                        "fincracks_type": "input_p arameter"
+                      },
+                      {
+                        "variable_name": "reference_name",
+                        "fincracks_type": "input_parameter"
+                      }
+                    ]
+                  },
+                  "input_variables": [
+                    {
+                      "variable_name": "is_reference_found",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "bool",
+                      "description": "Determina si el usuario es la persona de referencia que nos compartió el cliente."
+                    }
+                  ],
+                  "trigger_args": {
+                    "webhook_url": null,
+                    "channel": null,
+                    "timeout": null
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "ConditionalNode",
+                "componentKeyGenerated": "reference-confirmed",
+                "meta": {
+                  "function_id": "71d6713f-0bf2-4a3d-b796-e36f1f5dbccb",
+                  "variables": [
+                    {
+                      "variable_name": "is_reference_found",
+                      "fincracks_type": "user_variable",
+                      "node_id": "user-confirmation"
+                    }
+                  ],
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "FormNode",
+                "componentKeyGenerated": "client-known",
+                "meta": {
+                  "message_args": {
+                    "message": {
+                      "template": "¿Usted conoce a {client_name}?"
+                    },
+                    "variables": [
+                      {
+                        "variable_name": "client_name",
+                        "fincracks_type": "input_parameter"
+                      }
+                    ]
+                  },
+                  "input_variables": [
+                    {
+                      "variable_name": "is_client_known",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "bool",
+                      "description": "Determina si el usuario conoce al cliente."
+                    }
+                  ],
+                  "trigger_args": {
+                    "webhook_url": null,
+                    "channel": null,
+                    "timeout": null
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "ConditionalNode",
+                "componentKeyGenerated": "check-client-known",
+                "meta": {
+                  "function_id": "71d6713f-0bf2-4a3d-b796-e36f1f5dbccb",
+                  "variables": [
+                    {
+                      "variable_name": "is_client_known",
+                      "fincracks_type": "user_variable",
+                      "node_id": "FormNode_client-known"
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "FormNode",
+                "componentKeyGenerated": "user-age",
+                "meta": {
+                  "message_args": {
+                    "message": {
+                      "template": "¿Qué edad tiene usted?"
+                    },
+                    "variables": []
+                  },
+                  "input_variables": [
+                    {
+                      "variable_name": "reference_age",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "int",
+                      "description": "Determina la edad del usuario."
+                    },
+                    {
+                      "variable_name": "is_legal_age",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "bool",
+                      "description": "Determina si el usuario es mayor de edad."
+                    }
+                  ],
+                  "trigger_args": {
+                    "webhook_url": null,
+                    "channel": null,
+                    "timeout": null
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "ConditionalNode",
+                "componentKeyGenerated": "check-user-age",
+                "meta": {
+                  "function_id": "71d6713f-0bf2-4a3d-b796-e36f1f5dbccb",
+                  "variables": [
+                    {
+                      "variable_name": "is_legal_age",
+                      "fincracks_type": "user_variable",
+                      "node_id": "FormNode_user-age"
+                    }
+                  ]
+                }
+              },
+              {
+                "component": "FormNode",
+                "componentKeyGenerated": "client-recomendation",
+                "meta": {
+                  "message_args": {
+                    "message": {
+                      "template": "¿Usted recomienda a {client_name} para otorgarle el crédito?"
+                    },
+                    "variables": [
+                      {
+                        "variable_name": "client_name",
+                        "fincracks_type": "input_parameter"
+                      }
+                    ]
+                  },
+                  "input_variables": [
+                    {
+                      "variable_name": "is_client_suitable",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "bool",
+                      "description": "Determina si el usuario recomienda al cliente para obtener un cŕedito."
+                    }
+                  ],
+                  "trigger_args": {
+                    "webhook_url": null,
+                    "channel": null,
+                    "timeout": null
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "FormNode",
+                "componentKeyGenerated": "client-relationship",
+                "meta": {
+                  "message_args": {
+                    "message": {
+                      "template": "¿Cuál es el parentesco que usted comparte con {client_name}?"
+                    },
+                    "variables": [
+                      {
+                        "variable_name": "client_name",
+                        "fincracks_type": "input_parameter"
+                      }
+                    ]
+                  },
+                  "input_variables": [
+                    {
+                      "variable_name": "relationship",
+                      "save_db": false,
+                      "is_mandatory": true,
+                      "field_type": "str",
+                      "description": "Es la relación del usuario con el cliente."
+                    }
+                  ],
+                  "trigger_args": {
+                    "webhook_url": null,
+                    "channel": null,
+                    "timeout": null
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "MessageNode",
+                "componentKeyGenerated": "end-message",
+                "meta": {
+                  "message": {
+                    "text": "Agradecemos sinceramente su tiempo y nos complace informarle que cuenta con un 10% de descuento en la siguiente compra que realice en Surtidora Departamental. Esperamos atenderle pronto."
+                  },
+                  "max_iterations": 3
+                }
+              },
+              {
+                "component": "OutputNode",
+                "componentKeyGenerated": "step-6"
+              }
+            ],
+            "businessLogicRelationshipList": [
+              {
+                "businessLogicParentKey": "user-confirmation",
+                "businessLogicChildKey": "reference-confirmed",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "reference-confirmed",
+                "businessLogicChildKey": "client-known",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "reference-confirmed",
+                "businessLogicChildKey": "end-message",
+                "onSuccess": false
+              },
+              {
+                "businessLogicParentKey": "client-known",
+                "businessLogicChildKey": "check-client-known",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "check-client-known",
+                "businessLogicChildKey": "user-age",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "check-client-known",
+                "businessLogicChildKey": "end-message",
+                "onSuccess": false
+              },
+              {
+                "businessLogicParentKey": "user-age",
+                "businessLogicChildKey": "check-user-age",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "check-user-age",
+                "businessLogicChildKey": "client-recomendation",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "check-user-age",
+                "businessLogicChildKey": "client-recomendation",
+                "onSuccess": false
+              },
+              {
+                "businessLogicParentKey": "client-recomendation",
+                "businessLogicChildKey": "client-relationship",
+                "onSuccess": true
+              },
+              {
+                "businessLogicParentKey": "client-relationship",
+                "businessLogicChildKey": "end-message",
+                "onSuccess": true
+              }
+            ],
+            "endNodeName": "MessageNode_end-message"
+          },
+          "agent_input": null,
+          "agent_objective": {
+            "prompt": {
+              "template": "Tu objetivo es recopilar de forma veraz información del usuario {reference_name}"
+            },
+            "parameters": [
+              "reference_name"
+            ]
+          },
+          "agent_instructions": {
+            "prompt": {
+              "text": "1. Si el usuario hace preguntas que si esten relacionadas al proceso intenta respondarles amablemente. Si la pregunta no este relacionada al proceso, indica amablemente que tu solo puedes responder dudas acerca del proceso pero que puede contactar a 01800 12345 para cualquier duda. Si no has terminado de recabar la información insiste a que te ayude con una respuesta. Si ya terminaste solo vuelve a despedirte.\n2. Si no te queda clara alguna de las intenciones de la respuesta del usuario, puedes pedirle que sea más claro hasta que hayas confirmado la intención.\n3.Tus respuestas deben de tomar en cuenta los mensajes anteriores de la conversación"
+            }
+          },
+          "agent_context": {
+            "prompt": {
+              "template": "Tu nombre es {agent_name} y eres un agente de validación de referencias en solicitudes de crédito en la Tienda Surtidora Departamenta. El cliente {client_name} esta soliciyando un crédito y esta sujeto a aprobación. Parte del proceso de aprobación requiere realizar una serie de preguntas a la persona de referencia {reference_name}, cuyos datos fueron proporcionados por {client_name}. "
+            },
+            "parameters": [
+              "agent_name",
+              "client_name",
+              "reference_name"
+            ]
+          },
+          "agent_params": [
+            {
+              "parameter_name": "agent_name",
+              "value": "Jose Hernández",
+              "description": "Es el nombre del agente."
+            },
+            {
+              "parameter_name": "client_name",
+              "value": "Abel Santillan",
+              "description": "Es el nombre del cliente que solicita el crédito."
+            },
+            {
+              "parameter_name": "reference_name",
+              "value": "Joseph Sasson",
+              "description": "Es el nombre de la persona de referencia del cliente."
+            }
+          ]
+        }
+      },
+    "contact_details": {
+        "recipient_number": "+529531127188",
+        "whatsapp_token": 
+        "EAAQfmvT1cbkBOZBcqjeN0gZCmZAKnBPGkykq7ySJUvBWrxPCgr970bwKZCpXwrGymo4hY8zKKIwqJfgmSLZBAATNpYyzJ4lHFqP2jxFUP3q5xkaAPuE4rwZCwJTNrR7CkjgKr9EBVLB6a1xGZB8EFYZC9d5C3PZAY95v4pOXdVtC2LrJ0ZBvqIz6pmWRmTadxwS9FYRVYRoiBMPpXLWekV5L8Cry224qoZD",
+        "whatsapp_phone_number_id": "580532771815815",
+        "whatsapp_business_account_id": "1362547508119721",
+        "body_template": {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": "+529531127188",
+            "type": "template",
+            "template": {
+              "name": "validaciondereferenciaparacreditoconarbol",
+              "language": {
+                "code": "es_MX"
+              },
+              "components": [
+                {
+                  "type": "body",
+                  "parameters": [
+                    {
+                      "type": "text",
+                      "parameter_name": "agent_name",
+                      "text": "Jose Hernández"
+                    },
+                    {
+                      "type": "text",
+                      "parameter_name": "client_name",
+                      "text": "Abel Santillan"
+                    },
+                    {
+                      "type": "text",
+                      "parameter_name": "reference_name",
+                      "text": "Joseph Sasson"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+    }
+  }
