@@ -1,7 +1,7 @@
 import os
 import json
 from datetime import datetime, timezone
-from typing import Dict, Literal, Optional
+from typing import Dict, Literal, Optional, Tuple
 
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
@@ -102,8 +102,15 @@ class MongoCasesManager:
             return False, {"error_mongo": error_msg}
 
     def delete_item_by_agent_execution_id(self, agent_execution_id: str):
-        """
-        Elimina un documento de la colección basado en su agent_execution_id
+        """Elimina un documento de la colección basado en su agent_execution_id
+
+        Args:
+            agent_execution_id (str): id del agente en ejecucion
+
+        Returns:
+             Tuple[bool, Optional[Dict[str, str]]]:
+                - (False, dict) 
+                - (True, None) si no existe conflicto y se puede continuar con la operación.
         """
         try:
             result = self.collection.delete_one(
@@ -114,7 +121,7 @@ class MongoCasesManager:
                 logger.info(
                     f"Documento con agent_execution_id {agent_execution_id} eliminado correctamente."
                 )
-                return True, {"message": "Documento eliminado"}
+                return True, None
             else:
                 logger.warning(
                     f"No se encontró documento con agent_execution_id {agent_execution_id}."
@@ -130,3 +137,63 @@ class MongoCasesManager:
             error_msg = str(e) if str(e) else repr(e)
             logger.error(f"Error inesperado al eliminar documento: {error_msg}")
             return False, {"error_mongo": error_msg}
+
+    def search_item_in_execution(
+        self,
+        recipient_number: str,
+        whatsapp_token: str,
+        whatsapp_phone_number_id: str,
+        whatsapp_business_account_id: str
+        ) -> Tuple[bool, Optional[Dict[str, str]]]:
+        """
+        Verifica si existe un proceso en ejecución en la base de datos con los mismos datos de contacto.
+
+        Busca en la base de datos si ya existe un documento activo (con estado distinto a "error" o "finish") 
+        que tenga el mismo número de teléfono, token, phone_number_id y business_account_id. 
+        Esto permite evitar duplicidad en los procesos de ejecución para un mismo usuario.
+
+        Solo se considera que un proceso está activo si su estado (`status`) es uno de los siguientes:
+        - "send_tree"
+        - "sent_message_to_agent"
+        - "sent_message_to_user"
+
+        Args:
+            recipient_number (str): Número de teléfono del destinatario en formato internacional.
+            whatsapp_token (str): Token de autenticación para la API de WhatsApp.
+            whatsapp_phone_number_id (str): ID del número de teléfono usado en WhatsApp Business.
+            whatsapp_business_account_id (str): ID de la cuenta de WhatsApp Business.
+
+        Returns:
+            Tuple[bool, Optional[Dict[str, str]]]:
+                - (False, {"message": "Ya existe un proceso en ejecución para este usuario"}) si hay conflicto.
+                - (True, None) si no existe conflicto y se puede continuar con la operación.
+        """
+        try:
+            query = {
+                "contact_details.recipient_number": recipient_number,
+                "contact_details.whatsapp_token": whatsapp_token,
+                "contact_details.whatsapp_phone_number_id": whatsapp_phone_number_id,
+                "contact_details.whatsapp_business_account_id": whatsapp_business_account_id,
+                "status": {"$in": ["send_tree", "sent_message_to_agent", "sent_message_to_user"]}
+            }
+
+            existing_process = self.collection.find_one(query)
+
+            if existing_process:
+                logger.warning(
+                    f"Ya existe un proceso activo para el número {recipient_number} con estado '{existing_process['status']}'."
+                )
+                return False, {"message": "Ya existe un proceso en ejecución para este usuario"}
+
+            logger.info(f"No hay procesos en ejecución para el número {recipient_number}.")
+            return True, None
+
+        except PyMongoError as e:
+            error_msg = str(e) if str(e) else repr(e)
+            logger.error(f"Error al buscar documento en MongoDB: {error_msg}")
+            return False, {"error_mongo": error_msg}
+
+        except Exception as e:
+            error_msg = str(e) if str(e) else repr(e)
+            logger.error(f"Error inesperado en búsqueda: {error_msg}")
+            return False, {"error": error_msg}

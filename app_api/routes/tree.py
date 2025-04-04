@@ -7,10 +7,6 @@ from log.logger_config import logger
 from RMQ.publisher_tree import publish_tree
 from db.mongo import MongoCasesManager, MongoSchema, ContactDetails
 
-
-
-
-
 router = APIRouter()
 
 # Dependency injection
@@ -52,6 +48,18 @@ async def save_and_send_tree(
         )
 
     logger.info("Datos recibidos validados")
+
+    #Verificar si existe un proceso en la base de datos
+    
+    success, message = mongo.search_item_in_execution(
+        recipient_number=_contacdetails.get("recipient_number"),
+        whatsapp_token=_contacdetails.get("whatsapp_token"),
+        whatsapp_phone_number_id=_contacdetails.get("whatsapp_phone_number_id"),
+        whatsapp_business_account_id=_contacdetails.get("whatsapp_business_account_id"),
+        )
+    
+    if not success:
+        raise HTTPException(status_code=409, detail=message)
 
     # Crear schema para guardar
     mongo_data = MongoSchema(
